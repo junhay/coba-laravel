@@ -1,8 +1,7 @@
 <?php
 
-use App\Models\Post;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -13,40 +12,22 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Route::get('/', function () {
-    return view('home',[
-        "title" => "Home"
+    return view('home', [
+        "title" => "Home",
     ]);
 });
 Route::get('/about', function () {
-    return view('about',[
+    return view('about', [
         "title" => "About",
         "name" => "Jun Hay",
         "email" => "tanjunhay@gmail.com",
-        "image" => "gbr.png"
+        "image" => "gbr.png",
     ]);
 });
 
-Route::get('/blog', function () {
-    return view('posts',[
-        "title" => "Posts",
-        "posts" => Post::all()
-    ]);
-});
-
+Route::get('/posts', [PostController::class, 'index']);
 //halaman single posts
-Route::get('posts/{slug}', function ($slug) {
-
-    // $new_post = [];
-    // foreach ($blog_posts as $post) {
-    //     if($post["slug"] === $slug){
-    //         $new_post = $post;
-    //     }
-    // }
-    return view('post',[
-        "title" => "Single Post",
-        "post" => Post::find($slug)
-    ]);
-});
+Route::get('posts/{slug}', [PostController::class, 'show']);
